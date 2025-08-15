@@ -194,6 +194,129 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+// Create Aufgaben button
+const aufgabenBtn = document.createElement('button');
+aufgabenBtn.textContent = 'Aufgaben';
+aufgabenBtn.style.cssText = `
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+`;
+aufgabenBtn.addEventListener('mouseenter', () => {
+  aufgabenBtn.style.background = '#5a67d8';
+  aufgabenBtn.style.transform = 'translateY(-2px)';
+});
+aufgabenBtn.addEventListener('mouseleave', () => {
+  aufgabenBtn.style.background = '#667eea';
+  aufgabenBtn.style.transform = 'translateY(0)';
+});
+document.body.appendChild(aufgabenBtn);
+
+// Create overlay for questions
+const overlay = document.createElement('div');
+overlay.style.cssText = `
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 2000;
+  display: none;
+  backdrop-filter: blur(5px);
+`;
+
+const questionsContainer = document.createElement('div');
+questionsContainer.style.cssText = `
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+`;
+
+const closeBtn = document.createElement('button');
+closeBtn.innerHTML = '×';
+closeBtn.style.cssText = `
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+questionsContainer.innerHTML = `
+  <h2 style="margin-top: 0; color: #333; margin-bottom: 20px;">Interaktive Aufgaben</h2>
+  <ol style="line-height: 1.6; color: #555;">
+    <li style="margin-bottom: 20px;">
+      <b>Welche Unterschiede gibt es zwischen geringer und hoher Dichte?</b><br>
+      <textarea rows="3" style="width:100%; margin-top: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; resize: vertical;" placeholder="Deine Antwort..."></textarea>
+    </li>
+    <li style="margin-bottom: 20px;">
+      <b>Entscheide für jede Farbe (Lila, Grün und Rosa), welche Dichte mindestens nötig ist, um die Objekte detailliert zu modellieren.</b><br>
+      <textarea rows="3" style="width:100%; margin-top: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; resize: vertical;" placeholder="Deine Antwort..."></textarea>
+    </li>
+    <li style="margin-bottom: 20px;">
+      <b>Welchen Einfluss hat die Dichte auf die zugrundeliegende Berechnung der Visualisierung?</b><br>
+      <textarea rows="3" style="width:100%; margin-top: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; resize: vertical;" placeholder="Deine Antwort..."></textarea>
+    </li>
+    <li style="margin-bottom: 20px;">
+      <b>Ein Meteorologe möchte Hurricanes und Tornados modellieren, um Anwohner der Risikogebiete zu warnen. Entscheide für die folgenden Fälle, ob mit geringer oder hoher Dichte modelliert werden soll:</b>
+      <ul style="margin: 8px 0;">
+        <li>Welche Länder sind betroffen?</li>
+        <li>Welche Städte sind betroffen?</li>
+        <li>Liegen Krankenhäuser der betroffenen Städte in der Gefahrenzone?</li>
+      </ul>
+      <textarea rows="3" style="width:100%; margin-top: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; resize: vertical;" placeholder="Deine Antwort..."></textarea>
+    </li>
+    <li style="margin-bottom: 20px;">
+      <b>Stell dir vor, du möchtest ein 3D-Modell für ein Computerspiel gestalten, in dem eine Heldin durch verschiedene Landschaften reist. Überlege, wie die Dichte der Modelle die Atmosphäre und das Spielerlebnis beeinflusst. Beschreibe, wie du die Dichte für die Landschaft, die Heldin und besondere Objekte (z.B. magische Artefakte) wählen würdest.</b><br>
+      <textarea rows="3" style="width:100%; margin-top: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; resize: vertical;" placeholder="Deine Antwort..."></textarea>
+    </li>
+  </ol>
+`;
+
+questionsContainer.appendChild(closeBtn);
+overlay.appendChild(questionsContainer);
+document.body.appendChild(overlay);
+
+// Toggle overlay functionality
+function toggleOverlay() {
+  overlay.style.display = overlay.style.display === 'none' ? 'flex' : 'none';
+}
+
+aufgabenBtn.addEventListener('click', toggleOverlay);
+closeBtn.addEventListener('click', toggleOverlay);
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) toggleOverlay();
+});
+
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
