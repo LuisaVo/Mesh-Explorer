@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planet 3D Mesh Workshop</title>
+  <style>
+    body { margin: 0; background: #181818; color: #fff; font-family: sans-serif; }
+    #app { width: 100vw; height: 100vh; overflow: hidden; }
+    .controls {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(30,30,30,0.9);
+      padding: 16px;
+      border-radius: 8px;
+      z-index: 10;
+    }
+    .controls label { display: block; margin-bottom: 8px; }
+  </style>
+  <script type="module" crossorigin src="/assets/index-Dkj67I9p.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <div class="controls">
+    <label>
+      Mesh Dichte:
+      <input type="range" id="meshDensity" min="8" max="128" value="32" />
+      <span id="meshDensityValue">32</span>
+    </label>
+    <button id="resetCamera" style="margin-top:12px;width:100%">Kamera zurücksetzen</button>
+    <button id="toggleMesh" style="margin-top:12px;width:100%">Mesh ausblenden</button>
+  </div>
+</body>
+</html>
