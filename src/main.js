@@ -46,7 +46,7 @@ controls.update();
 const light = new THREE.DirectionalLight(0xffffff, 1.2);
 light.position.set(10, 10, 10);
 scene.add(light);
-const yellowlight = new THREE.DirectionalLight(0xffff00, 1);
+const yellowlight = new THREE.DirectionalLight(0xffff00, 0.8);
 yellowlight.position.set(-10, -10, -10);
 scene.add(yellowlight);
 // scene.add(new THREE.AmbientLight(0xffffff, 0.2));
@@ -104,9 +104,9 @@ function addObjects() {
   });
 
   // Add terrain patches
-  terrains.push(createTerrain({ position: [-7, -7, 0], meshDensity, type: 'smooth' }));
-  terrains.push(createTerrain({ position: [0, -7, 0], meshDensity, type: 'big' }));
-  terrains.push(createTerrain({ position: [7, -7, 0], meshDensity, type: 'small' }));
+  terrains.push(createTerrain({ position: [-7, -5, 0], meshDensity, type: 'smooth' }));
+  terrains.push(createTerrain({ position: [0, -5, 0], meshDensity, type: 'big' }));
+  terrains.push(createTerrain({ position: [7, -5, 0], meshDensity, type: 'small' }));
   terrains.forEach(obj => {
     scene.add(obj.mesh);
     scene.add(obj.wire);
