@@ -29,8 +29,8 @@ const bgTexture = new THREE.CanvasTexture(canvas);
 scene.background = bgTexture;
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-const initialCameraPosition = new THREE.Vector3(0, 9, 18);
-const initialTarget = new THREE.Vector3(0, 0, 0);
+const initialCameraPosition = new THREE.Vector3(6, 6, 17);
+const initialTarget = new THREE.Vector3(1, 1.5, -1.5);
 camera.position.copy(initialCameraPosition);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
