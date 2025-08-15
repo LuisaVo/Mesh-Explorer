@@ -154,8 +154,112 @@ renderer.domElement.addEventListener('pointerdown', event => {
 
 addObjects();
 
+// Create modern controls panel
+const controlsPanel = document.createElement('div');
+controlsPanel.style.cssText = `
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  z-index: 1000;
+  min-width: 250px;
+`;
+
+controlsPanel.innerHTML = `
+  <h3 style="margin: 0 0 16px 0; color: #333; font-size: 18px; font-weight: 600;">Steuerung</h3>
+  
+  <div style="margin-bottom: 16px;">
+    <label style="display: block; margin-bottom: 8px; color: #555; font-weight: 500; font-size: 14px;">Mesh-Dichte: <span id="meshDensityValue" style="color: #667eea; font-weight: 600;">32</span></label>
+    <input type="range" id="meshDensity" min="8" max="128" value="32" style="
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+      outline: none;
+      -webkit-appearance: none;
+    ">
+  </div>
+  
+  <div style="display: flex; gap: 8px; flex-direction: column;">
+    <button id="resetCamera" style="
+      padding: 10px 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    ">Kamera zurücksetzen</button>
+    
+    <button id="toggleMesh" style="
+      padding: 10px 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    ">Mesh ausblenden</button>
+  </div>
+`;
+
+// Add hover effects to buttons
+const buttons = controlsPanel.querySelectorAll('button');
+buttons.forEach(btn => {
+  btn.addEventListener('mouseenter', () => {
+    btn.style.transform = 'translateY(-2px)';
+    btn.style.boxShadow = '0 6px 16px rgba(102, 126, 234, 0.4)';
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = 'translateY(0)';
+    btn.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)';
+  });
+});
+
+// Style the range slider thumb
+const style = document.createElement('style');
+style.textContent = `
+  #meshDensity::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    transition: all 0.2s ease;
+  }
+  #meshDensity::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+  }
+  #meshDensity::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+  }
+`;
+document.head.appendChild(style);
+
+document.body.appendChild(controlsPanel);
+
 // Reset camera button functionality
-const resetBtn = document.getElementById('resetCamera');
+const resetBtn = controlsPanel.querySelector('#resetCamera');
 resetBtn.addEventListener('click', () => {
   camera.position.copy(initialCameraPosition);
   controls.target.copy(initialTarget);
@@ -163,7 +267,7 @@ resetBtn.addEventListener('click', () => {
 });
 
 // Toggle mesh wireframe visibility
-const toggleBtn = document.getElementById('toggleMesh');
+const toggleBtn = controlsPanel.querySelector('#toggleMesh');
 let meshVisible = true;
 toggleBtn.addEventListener('click', () => {
   meshVisible = !meshVisible;
@@ -174,8 +278,8 @@ toggleBtn.addEventListener('click', () => {
 });
 
 // Mesh density control
-const meshDensityInput = document.getElementById('meshDensity');
-const meshDensityValue = document.getElementById('meshDensityValue');
+const meshDensityInput = controlsPanel.querySelector('#meshDensity');
+const meshDensityValue = controlsPanel.querySelector('#meshDensityValue');
 meshDensityInput.addEventListener('input', e => {
   meshDensity = parseInt(e.target.value);
   meshDensityValue.textContent = meshDensity;
